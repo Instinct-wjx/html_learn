@@ -28,6 +28,8 @@ app/
 src/
   components/         React 组件
   css/                页面样式
+data/
+  site.js             页面内容数据
 next.config.mjs       Next.js 配置
 ```
 
@@ -39,5 +41,6 @@ next.config.mjs       Next.js 配置
 - 导航由普通链接回调改为 Next.js 的 `Link` 和 `usePathname`。
 - 使用浏览器状态、事件或动画的组件通过 `"use client"` 标记为客户端组件。
 - 纯展示组件仍是服务端组件，可由 Next.js 预先生成 HTML。
+- 页面文案集中在 `data/site.js`，组件负责展示，输入框由 React state 驱动字数统计。
 
 这仍然是 React：Next.js 建立在 React 之上，并补充了路由、服务端渲染、构建和部署等能力。
