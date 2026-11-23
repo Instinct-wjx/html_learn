@@ -1,13 +1,14 @@
+import Link from "next/link";
 import Nav from "./Nav.jsx";
 import PageHeading from "./PageHeading.jsx";
 import AnimatedCardGrid from "./AnimatedCardGrid.jsx";
 
-export default function HomePage({ current, onNavigate }) {
+export default function HomePage() {
   return (
     <AnimatedCardGrid className="dashboard-grid">
       {/* 复用：Nav 和 PageHeading 都和文字实验室共享，只是 PageHeading 的 props 换了内容 */}
       <article className="hero-stage panel-full">
-        <Nav current={current} onNavigate={onNavigate} />
+        <Nav />
         <PageHeading title="关于我" subtitle="项目，创意，灵感，心得，我的作品" />
       </article>
 
@@ -16,14 +17,10 @@ export default function HomePage({ current, onNavigate }) {
         <p className="section-kicker">作品</p>
         <p className="featured-title">文字实验室</p>
         <p className="featured-copy">拼音和情绪，挖掘中文里的细节</p>
-        <a
-          className="featured-link"
-          href="#"
-          onClick={(e) => { e.preventDefault(); onNavigate("textlab"); }}
-        >
+        <Link className="featured-link" href="/text-lab">
           <span className="featured-link-label">打开作品</span>
           <span className="arrow">›</span>
-        </a>
+        </Link>
       </article>
 
       <article className="panel panel-full identity-panel card">

@@ -1,3 +1,5 @@
+"use client";
+
 // 文字实验室的"输入区"卡片。单独拆成一块，页面读起来更清爽。
 export default function InputCard() {
   return (
