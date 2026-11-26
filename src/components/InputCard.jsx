@@ -1,10 +1,35 @@
 "use client";
 
+// 文字实验室的"输入区"卡片。这一节给"开始分析"接上了后端：
+// 点按钮就把输入的文字 POST 给 /api/analyze，拿到结果通过 onResult 交给父组件。
+// 请求出问题时用 try/catch 接住，在按钮上方给一行提示，不让界面无声失效。
+// 后端地址从 .env.local 的 NEXT_PUBLIC_API_BASE_URL 读取。
 import { useState } from "react";
 
-// 文字实验室的"输入区"卡片。单独拆成一块，页面读起来更清爽。
-export default function InputCard() {
+export default function InputCard({ onResult }) {
   const [text, setText] = useState("今天的风很轻，适合把脑海里的想法慢慢写下来。");
+  const [error, setError] = useState("");
+
+  async function handleAnalyze() {
+    setError("");
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/analyze`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `分析失败：${res.status}`);
+      }
+
+      onResult(await res.json());
+    } catch (error) {
+      setError(error.message);
+    }
+  }
 
   return (
     <article className="panel panel-half lab-panel card">
@@ -19,11 +44,14 @@ export default function InputCard() {
           rows="8"
           placeholder="例如：生活没有标准答案，但每一天都值得认真感受。"
           value={text}
-          onChange={(event) => setText(event.target.value)}
+          onChange={(e) => setText(e.target.value)}
         />
+        {/* state 现身：text 一变，这行数字自动跟着变 */}
         <p className="lab-count">已输入 {text.length} 字</p>
-        {/* 真正的分析结果将在接入后端 API 后由返回数据驱动。 */}
-        <button className="primary-button" type="button">开始分析</button>
+        {error && <p className="lab-error">{error}</p>}
+        <button className="primary-button" type="button" onClick={handleAnalyze}>
+          开始分析
+        </button>
       </form>
     </article>
   );

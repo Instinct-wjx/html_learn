@@ -1,5 +1,5 @@
-import TextLabPage from "../../src/components/TextLabPage.jsx";
+import TextLabView from "../../src/components/TextLabView.jsx";
 
 export default function Page() {
-  return <TextLabPage />;
+  return <TextLabView />;
 }
